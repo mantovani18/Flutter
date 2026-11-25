@@ -52,5 +52,3 @@ flutter run -d chrome
 dart analyze
 flutter test
 ```
-
-Projeto desenvolvido por Pedro Henrique Mantovani.
