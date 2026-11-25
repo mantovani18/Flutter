@@ -1,62 +1,56 @@
 # Receitas da Casa
 
-Aplicativo Flutter para descobrir receitas, pesquisar por nome e guardar
-favoritas. As receitas são carregadas da API pública
-[DummyJSON Recipes](https://dummyjson.com/docs/recipes).
+Projeto Flutter que eu desenvolvi para listar, pesquisar e salvar receitas
+da API pública DummyJSON Recipes. Os nomes das receitas foram adaptados para
+português brasileiro.
 
-## Funcionalidades
+## O que o app faz
 
-- Lista inicial de receitas com imagem alternativa quando a imagem não está
-  disponível.
-- Pesquisa remota por nome, ignorando espaços no começo e no fim; a pesquisa
-  vazia não é enviada.
-- Detalhes com ingredientes, instruções em ordem, tempos, porções, avaliação e
-  informações de refeição disponíveis.
-- Favoritos adicionados e removidos durante a sessão, acessíveis na aba
-  **Favoritos**.
-- Indicadores de carregamento, erros com nova tentativa, resultados vazios e
-  favoritos vazios.
+- Carrega uma lista de receitas ao abrir.
+- Busca receitas pelo nome.
+- Mostra uma imagem, ingredientes e modo de preparo.
+- Guarda favoritos enquanto o app estiver aberto.
+- Mostra mensagens quando a internet falha, não encontra receitas ou não existem favoritos.
 
-## Organização
+## Como está dividido
 
-- `lib/main.dart`: navegação, telas, estado da lista/pesquisa e fonte única de
-  favoritos.
-- `lib/models/recipe.dart`: modelo e conversão tipada da resposta da API.
-- `lib/services/recipe_api.dart`: chamadas HTTP e validação de respostas.
-- `android/`, `ios/` e `web/`: projetos de plataforma para execução mobile e
-  navegador.
+- `lib/main.dart` tem as telas e a navegação.
+- `lib/models/recipe.dart` organiza os dados recebidos pela API.
+- `lib/services/recipe_api.dart` faz as chamadas HTTP.
+- `test/` contém testes do modelo e dos favoritos.
+- `android/`, `ios/` e `web/` têm os arquivos das plataformas.
 
-A listagem e a pesquisa usam os endpoints `/recipes?limit=30` e
-`/recipes/search?q=...`. Ambos retornam os campos completos utilizados pela tela
-de detalhes, então o objeto selecionado é reutilizado sem uma nova chamada por
-ID. As telas compartilham um único `FavoritesStore`, mantido em memória durante
-a sessão. As operações de busca e carregamento possuem estado de execução para
-impedir solicitações concorrentes pela interface.
+Para os detalhes, eu reaproveito o mesmo objeto recebido na lista ou na
+busca. Assim não é necessário fazer uma nova requisição ao abrir uma receita.
 
-## Dependências e SDK
+## Rodando o projeto
 
-- Flutter SDK **3.44.0**
-- Dart SDK **3.12.0**
-- `http` **^1.3.0**
-- `flutter_test` e `flutter_lints` para testes e análise estática
-
-## Como executar
-
-1. Instale o Flutter SDK e configure o `PATH`.
-2. No terminal, acesse a pasta `saia_da_5_serie`.
-3. Baixe as dependências e execute em um dispositivo/emulador conectado:
+É preciso ter o Flutter instalado.
 
 ```bash
+cd saia_da_5_serie
 flutter pub get
 flutter run
 ```
 
-Para executar no navegador, use `flutter run -d chrome` (com suporte Web
-habilitado na instalação do Flutter).
-
-## Verificações
+No Chrome:
 
 ```bash
-flutter analyze
+flutter run -d chrome
+```
+
+## Tecnologias
+
+- Flutter 3.44.0
+- Dart 3.12.0
+- Pacote `http`
+- API DummyJSON Recipes
+
+## Testes
+
+```bash
+dart analyze
 flutter test
 ```
+
+Projeto desenvolvido por Pedro Henrique Mantovani.
