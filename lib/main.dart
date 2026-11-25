@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 import 'models/recipe.dart';
 import 'services/recipe_api.dart';
 
+const _pageColor = Color(0xFF111522);
+const _panelColor = Color(0xFF1A2030);
+const _cardColor = Color(0xFF222A3B);
+const _borderColor = Color(0xFF343E54);
+const _accentColor = Color(0xFFF18462);
+const _mintColor = Color(0xFF7BD6C3);
+const _mutedTextColor = Color(0xFFADB6C8);
+
 const _portugueseRecipeNames = <int, String>{
   1: 'Pizza margherita clássica',
   2: 'Salteado vegetariano',
@@ -68,31 +76,30 @@ class ReceitasDaCasaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const seedColor = Color(0xFFC7A94B);
     return MaterialApp(
       title: 'Receitas da Casa',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: seedColor,
+          seedColor: _accentColor,
           brightness: Brightness.dark,
-          surface: const Color(0xFF1C1F18),
+          surface: _panelColor,
         ),
-        scaffoldBackgroundColor: const Color(0xFF171914),
+        scaffoldBackgroundColor: _pageColor,
         appBarTheme: const AppBarTheme(
-          foregroundColor: Color(0xFFF3EBDD),
-          backgroundColor: Color(0xFF171914),
+          foregroundColor: Color(0xFFF5F3EE),
+          backgroundColor: _pageColor,
           surfaceTintColor: Colors.transparent,
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: const Color(0xFF24271F),
-          hintStyle: const TextStyle(color: Color(0xFFAAA99F)),
-          prefixIconColor: const Color(0xFFC7A94B),
-          suffixIconColor: const Color(0xFFC7A94B),
+          fillColor: _panelColor,
+          hintStyle: const TextStyle(color: _mutedTextColor),
+          prefixIconColor: _mintColor,
+          suffixIconColor: _mintColor,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
             borderSide: BorderSide.none,
           ),
         ),
@@ -274,38 +281,70 @@ class _RecipeHomeState extends State<RecipeHome> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+          padding: const EdgeInsets.fromLTRB(18, 14, 18, 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.eco, color: Color(0xFFC7A94B), size: 26),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Receitas da Casa',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: const Color(0xFFC7A94B),
-                          fontWeight: FontWeight.w700,
-                        ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF302B49), Color(0xFF1E2938)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Text(
-                'Hoje vai sair o quê?',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: _borderColor),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: _accentColor,
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: const Icon(
+                            Icons.restaurant_menu,
+                            color: _pageColor,
+                            size: 21,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'RECEITAS DA CASA',
+                          style: TextStyle(
+                            color: _mintColor,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.4,
+                          ),
+                        ),
+                      ],
                     ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                'Escolha uma receita, confira os ingredientes e bora cozinhar.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFFAAA99F),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Hoje a cozinha\né sua.',
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                height: 1.05,
+                              ),
                     ),
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Escolha um prato e mãos à obra.',
+                      style: TextStyle(color: _mutedTextColor),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 14),
               TextField(
                 controller: _searchController,
                 textInputAction: TextInputAction.search,
@@ -327,14 +366,29 @@ class _RecipeHomeState extends State<RecipeHome> {
                         ),
                 ),
               ),
-              const SizedBox(height: 18),
-              Text(
-                displayingSearch
-                    ? 'Resultados para "$_activeQuery"'
-                    : 'Ideias da cozinha',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
+              const SizedBox(height: 16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      displayingSearch
+                          ? 'Buscou por: "$_activeQuery"'
+                          : 'Escolhas pra hoje',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
                     ),
+                  ),
+                  if (!displayingSearch && !_isLoadingRecipes)
+                    Text(
+                      '${_recipes.length} pratos',
+                      style: const TextStyle(
+                        color: _mutedTextColor,
+                        fontSize: 12,
+                      ),
+                    ),
+                ],
               ),
             ],
           ),
@@ -385,10 +439,20 @@ class _RecipeHomeState extends State<RecipeHome> {
       );
     }
 
-    return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+    return _recipeGrid(recipes);
+  }
+
+  Widget _recipeGrid(List<Recipe> recipes) {
+    final columns = MediaQuery.sizeOf(context).width > 650 ? 3 : 2;
+    return GridView.builder(
+      padding: const EdgeInsets.fromLTRB(18, 8, 18, 20),
       itemCount: recipes.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: columns,
+        mainAxisExtent: 238,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
       itemBuilder: (context, index) {
         final recipe = recipes[index];
         return RecipeCard(
@@ -413,7 +477,7 @@ class _RecipeHomeState extends State<RecipeHome> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.favorite, color: Color(0xFFD36D5E)),
+                  const Icon(Icons.bookmark, color: _accentColor),
                   const SizedBox(height: 12),
                   Text(
                     'Salvas por você',
@@ -425,7 +489,7 @@ class _RecipeHomeState extends State<RecipeHome> {
                   Text(
                     'Os pratos que você separou para fazer depois.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFFAAA99F),
+                          color: _mutedTextColor,
                         ),
                   ),
                 ],
@@ -438,19 +502,7 @@ class _RecipeHomeState extends State<RecipeHome> {
                       message:
                           'Você ainda não salvou receitas. Toque no coração de uma receita para adicioná-la aqui.',
                     )
-                  : ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
-                      itemCount: recipes.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final recipe = recipes[index];
-                        return RecipeCard(
-                          recipe: recipe,
-                          favorites: _favorites,
-                          onTap: () => _openRecipe(recipe),
-                        );
-                      },
-                    ),
+                  : _recipeGrid(recipes),
             ),
           ],
         );
@@ -481,84 +533,115 @@ class RecipeCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 0,
-      color: const Color(0xFF24271F),
+      color: _cardColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: Color(0xFF34372E)),
+        borderRadius: BorderRadius.circular(22),
+        side: const BorderSide(color: _borderColor),
       ),
       child: InkWell(
         onTap: onTap,
-        child: SizedBox(
-          height: 132,
-          child: Row(
-            children: [
-              RecipeImage(url: recipe.image, width: 118, height: 132),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 12, 4, 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 126,
+              width: double.infinity,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  RecipeImage(
+                    url: recipe.image,
+                    width: double.infinity,
+                    height: 126,
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: AnimatedBuilder(
+                      animation: favorites,
+                      builder: (context, _) {
+                        final isFavorite = favorites.contains(recipe.id);
+                        return Material(
+                          color: _pageColor.withValues(alpha: 0.88),
+                          shape: const CircleBorder(),
+                          child: IconButton(
+                            visualDensity: VisualDensity.compact,
+                            tooltip: isFavorite
+                                ? 'Remover dos favoritos'
+                                : 'Adicionar aos favoritos',
+                            onPressed: () => favorites.toggle(recipe),
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite
+                                  ? _accentColor
+                                  : const Color(0xFFF5F3EE),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      portugueseRecipeName(recipe),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        height: 1.1,
+                      ),
+                    ),
+                    if (detail.isNotEmpty) ...[
+                      const SizedBox(height: 4),
                       Text(
-                        portugueseRecipeName(recipe),
-                        maxLines: 2,
+                        detail,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                          color: _mutedTextColor,
+                          fontSize: 11,
                         ),
-                      ),
-                      if (detail.isNotEmpty) ...[
-                        const SizedBox(height: 6),
-                        Text(
-                          detail,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Color(0xFFAAA99F),
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                      const Spacer(),
-                      Row(
-                        children: [
-                          if (recipe.rating != null) ...[
-                            const Icon(Icons.star,
-                                size: 16, color: Color(0xFFE6A532)),
-                            const SizedBox(width: 4),
-                            Text(recipe.rating!.toStringAsFixed(1)),
-                          ],
-                          const Spacer(),
-                          AnimatedBuilder(
-                            animation: favorites,
-                            builder: (context, _) {
-                              final isFavorite = favorites.contains(recipe.id);
-                              return IconButton(
-                                visualDensity: VisualDensity.compact,
-                                tooltip: isFavorite
-                                    ? 'Remover dos favoritos'
-                                    : 'Adicionar aos favoritos',
-                                onPressed: () => favorites.toggle(recipe),
-                                icon: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavorite
-                                      ? const Color(0xFFD36D5E)
-                                      : const Color(0xFFAAA99F),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
                       ),
                     ],
-                  ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        if (recipe.rating != null) ...[
+                          const Icon(
+                            Icons.star_rounded,
+                            size: 17,
+                            color: _accentColor,
+                          ),
+                          const SizedBox(width: 3),
+                          Text(
+                            recipe.rating!.toStringAsFixed(1),
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ],
+                        const Spacer(),
+                        const Icon(
+                          Icons.arrow_outward_rounded,
+                          size: 17,
+                          color: _mintColor,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -580,12 +663,12 @@ class RecipeImage extends StatelessWidget {
   Widget _fallback() => Container(
         width: width,
         height: height,
-        color: const Color(0xFF34372E),
+        color: _panelColor,
         alignment: Alignment.center,
         child: const Icon(
           Icons.restaurant,
           size: 36,
-          color: Color(0xFFC7A94B),
+          color: _mintColor,
         ),
       );
 
@@ -645,7 +728,7 @@ class RecipeDetailsPage extends StatelessWidget {
                 onPressed: () => favorites.toggle(recipe),
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? const Color(0xFFD36D5E) : null,
+                  color: isFavorite ? _accentColor : null,
                 ),
               );
             },
@@ -673,14 +756,14 @@ class RecipeDetailsPage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 mealDetails.join(' · '),
-                style: const TextStyle(color: Color(0xFFAAA99F)),
+                style: const TextStyle(color: _mutedTextColor),
               ),
             ],
             if (recipe.rating != null) ...[
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Icon(Icons.star, color: Color(0xFFE6A532), size: 19),
+                  const Icon(Icons.star, color: _accentColor, size: 19),
                   const SizedBox(width: 5),
                   Text('${recipe.rating!.toStringAsFixed(1)} de avaliação'),
                 ],
@@ -732,7 +815,7 @@ class RecipeDetailsPage extends StatelessWidget {
                         child: Icon(
                           Icons.circle,
                           size: 7,
-                          color: Color(0xFF65836A),
+                          color: _mintColor,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -760,11 +843,11 @@ class RecipeDetailsPage extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 14,
-                            backgroundColor: const Color(0xFF34372E),
+                            backgroundColor: _panelColor,
                             child: Text(
                               '${entry.key + 1}',
                               style: const TextStyle(
-                                color: Color(0xFFC7A94B),
+                                color: _mintColor,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12,
                               ),
@@ -798,9 +881,9 @@ class _InfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      avatar: Icon(icon, size: 17, color: const Color(0xFFC7A94B)),
+      avatar: Icon(icon, size: 17, color: _mintColor),
       label: Text(label),
-      backgroundColor: const Color(0xFF34372E),
+      backgroundColor: _panelColor,
       side: BorderSide.none,
     );
   }
@@ -827,7 +910,7 @@ class _MessageState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 42, color: Colors.black45),
+            Icon(icon, size: 42, color: _mutedTextColor),
             const SizedBox(height: 14),
             Text(message, textAlign: TextAlign.center),
             if (actionLabel != null && onAction != null) ...[
