@@ -1,0 +1,24 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Android / iOS generated or local files
+android/local.properties
+ios/Flutter/.last_build_id
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local logs
+*.log
